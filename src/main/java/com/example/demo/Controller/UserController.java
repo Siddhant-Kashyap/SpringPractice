@@ -1,26 +1,26 @@
 package com.example.demo.Controller;
 
 import com.example.demo.Entity.User;
+import com.example.demo.Services.UserServices;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
 
 @RestController
 @RequestMapping("/user")
 public class UserController {
-    private final Map<Long, User> userMap = new HashMap<>();
+    @Autowired
+    UserServices userServices;
 
     @GetMapping
-    public ResponseEntity<ArrayList<User>> getUser(){
-        return ResponseEntity.ok(new ArrayList<>(userMap.values()));
+    public ResponseEntity<List<User>> getUser(){
+        return ResponseEntity.ok(userServices.getAll());
     }
     @PostMapping("/add")
     public ResponseEntity<Boolean> postUser(@RequestBody User req){
-        userMap.put(req.getId(),req);
+        userServices.createUserStory(req);
         return ResponseEntity.ok(true);
     }
 
